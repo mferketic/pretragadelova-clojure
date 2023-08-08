@@ -1,6 +1,37 @@
-{% extends "base.html" %}
-{% block content %}
-  <div class="content">
-  {{docs|markdown}}
+{% extends "base.html" %} {% block content %}
+<div class="content">
+
+      <div class="columns columnsX" style="text-align: justify">
+        <h1>WELCOME TO CAR SERVICE</h1>
+        <p>Click on service that you want to do</p>
+      </div>
+
+  <div class="columns ">
+    <div class="column">
+      <a class="button" style="height: 200px" href="/majorService">
+        <div>
+          <img class="image is-128x128" src="/img/major_service.jpg" width="20px" height="20px">
+          <p>Major service</p>
+        </div>
+      </a>
+    </div>
+    <div class="column">
+      <a class="button" style="height: 200px" href="/minorService">
+        <div >
+          <img class="image is-128x128" src="/img/minor_service.jpg" width="20px" height="20px">
+          <p>Minor service</p>
+        </div>
+      </a>
+    </div>
+    <div class="column">
+      <a class="button" style="height: 200px" href="/sensors">
+        <div>
+          <img class="image is-128x128" src="/img/sensor.jpg" width="20px" height="20px">
+          <p>Sensors</p>
+        </div>
+      </a>
+    </div>
   </div>
+</div>
+
 {% endblock %}

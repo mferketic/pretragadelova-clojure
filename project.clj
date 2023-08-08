@@ -1,4 +1,4 @@
-(defproject pretragadelova "0.1.0-SNAPSHOT"
+(defproject carservice "0.1.0-SNAPSHOT"
 
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
@@ -30,6 +30,7 @@
                  [ring-webjars "0.2.0"]
                  [ring/ring-core "1.8.2"]
                  [ring/ring-defaults "0.3.2"]
+                 [mysql/mysql-connector-java "8.0.33"]
                  [selmer "1.12.31"]]
 
   :min-lein-version "2.0.0"
@@ -38,14 +39,14 @@
   :test-paths ["test/clj"]
   :resource-paths ["resources"]
   :target-path "target/%s/"
-  :main ^:skip-aot pretragadelova.core
+  :main ^:skip-aot carservice.core
 
   :plugins [] 
 
   :profiles
   {:uberjar {:omit-source true
              :aot :all
-             :uberjar-name "pretragadelova.jar"
+             :uberjar-name "carservice.jar"
              :source-paths ["env/prod/clj" ]
              :resource-paths ["env/prod/resources"]}
 

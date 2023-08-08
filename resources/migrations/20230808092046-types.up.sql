@@ -1,0 +1,6 @@
+CREATE TABLE types
+(id INTEGER PRIMARY KEY AUTO_INCREMENT,
+ name VARCHAR(30),
+ idService INT,
+ FOREIGN KEY (idService) REFERENCES services(id)
+);

@@ -1,0 +1,9 @@
+CREATE TABLE cars
+(id INTEGER PRIMARY KEY AUTO_INCREMENT,
+ year INT,
+ idModel INT,
+ idUser INT,
+ timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ FOREIGN KEY (idModel) REFERENCES models(id),
+ FOREIGN KEY (idUser) REFERENCES users(id)
+);

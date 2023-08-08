@@ -1,19 +1,19 @@
 {
         "calva.customREPLCommandSnippets": [
         {
-            "name": "Start pretragadelova Server",
+            "name": "Start carservice Server",
             "ns": "user",
             "repl": "clj",
             "snippet": "(start)"
         },
         {
-            "name": "Stop pretragadelova Server",
+            "name": "Stop carservice Server",
             "ns": "user",
             "repl": "clj",
             "snippet": "(stop)"
         },
         {
-            "name": "Restart pretragadelova Server",
+            "name": "Restart carservice Server",
             "ns": "user",
             "repl": "clj",
             "snippet": "(restart)"
@@ -21,7 +21,7 @@
     ],
     "calva.replConnectSequences": [
                 {
-            "name": "Server only - pretragadelova",
+            "name": "Server only - carservice",
             "projectType": "Leiningen",
             "afterCLJReplJackInCode": "(in-ns 'user) (start)",
             "cljsType": "none",

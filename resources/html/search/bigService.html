@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <h1>MAJOR SERVICE</h1>
+            <p>When performing a major car service, it's essential to address critical components to ensure optimal
+                performance and longevity. Some key elements that require attention during this comprehensive maintenance
+                include: <br><br> - Timing belt (which controls the synchronization of engine components)
+                <br>- Guide roller (that helps maintain proper belt tension)
+                <br>- Spanner (that ensures secure fastening)
+                <br>- Water pump (responsible for regulating engine temperature)<br>
+                <br>Replacing and maintaining these components diligently can help keep
+                your vehicle running smoothly and reduce the risk of costly repairs down the road.</p>
+            <div class="columns">
+                <div class="column">
+                    <form method="POST" action="/searchForBigService">
+                        {% csrf-field %}
+                        <div class="field">
+                            <label class="label">
+                                Mercedes Benz Model
+                            </label>
+                            <select class="input" name="model1" id="model1">
+                                {% for model in models %}
+                                <option value="{{model.id}}">{{model.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label class="label">
+                                Part types
+                            </label>
+                            <select class="input" name="type1" id="type1">
+                                <option value="0">All</option>
+                                {% for type in types %}
+                                <option value="{{type.id}}">{{type.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="year">
+                                Year manufactured
+                            </label>
+                            {% if errors.year %}
+                            <div class="notification is-danger">
+                                {{errors.year|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="year"
+                                   name="year"
+                                   value="{{year}}" />
+                        </div>
+                        <input type="submit"
+                               class="button is-primary"
+                               value="Search for parts!" />
+                    </form>
+                </div>
+            </div>
+            <table>
+                <tr>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Country</th>
+                </tr>
+                <tr>
+                    <td>Alfreds Futterkiste</td>
+                    <td>Maria Anders</td>
+                    <td>Germany</td>
+                </tr>
+                <tr>
+                    <td>Centro comercial Moctezuma</td>
+                    <td>Francisco Chang</td>
+                    <td>Mexico</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

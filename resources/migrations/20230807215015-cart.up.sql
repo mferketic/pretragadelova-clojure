@@ -1,0 +1,7 @@
+CREATE TABLE cart
+(id INTEGER PRIMARY KEY AUTO_INCREMENT,
+ idUser INT,
+ idPart INT,
+ FOREIGN KEY (idUser) REFERENCES users(id),
+ FOREIGN KEY (idPart) REFERENCES parts(id)
+);

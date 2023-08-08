@@ -1,13 +1,13 @@
 (ns user
   "Userspace functions you can run by default in your local REPL."
   (:require
-   [pretragadelova.config :refer [env]]
+   [carservice.config :refer [env]]
     [clojure.pprint]
     [clojure.spec.alpha :as s]
     [expound.alpha :as expound]
     [mount.core :as mount]
-    [pretragadelova.core :refer [start-app]]
-    [pretragadelova.db.core]
+    [carservice.core :refer [start-app]]
+    [carservice.db.core]
     [conman.core :as conman]
     [luminus-migrations.core :as migrations]))
 
@@ -19,12 +19,12 @@
   "Starts application.
   You'll usually want to run this on startup."
   []
-  (mount/start-without #'pretragadelova.core/repl-server))
+  (mount/start-without #'carservice.core/repl-server))
 
 (defn stop
   "Stops application."
   []
-  (mount/stop-except #'pretragadelova.core/repl-server))
+  (mount/stop-except #'carservice.core/repl-server))
 
 (defn restart
   "Restarts application."
@@ -35,10 +35,10 @@
 (defn restart-db
   "Restarts database."
   []
-  (mount/stop #'pretragadelova.db.core/*db*)
-  (mount/start #'pretragadelova.db.core/*db*)
-  (binding [*ns* (the-ns 'pretragadelova.db.core)]
-    (conman/bind-connection pretragadelova.db.core/*db* "sql/queries.sql")))
+  (mount/stop #'carservice.db.core/*db*)
+  (mount/start #'carservice.db.core/*db*)
+  (binding [*ns* (the-ns 'carservice.db.core)]
+    (conman/bind-connection carservice.db.core/*db* "sql/queries.sql")))
 
 (defn reset-db
   "Resets database."

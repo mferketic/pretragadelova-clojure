@@ -3,20 +3,46 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to pretragadelova</title>
+    <title>CAR SERVICE</title>
 
-    <!-- styles -->
-    {% style "/assets/bulma/css/bulma.min.css" %}
-    {% style "/assets/material-icons/css/material-icons.min.css" %}
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bulma.min.js"></script>
 
-    {% style "/css/screen.css" %}
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bulma.min.css">
+      <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css'>
+
+      <!-- styles -->
+      {% style "/assets/bulma/css/bulma.min.css" %}
+      {% style "/assets/material-icons/css/material-icons.min.css" %}
+
+      {% style "/css/screen.css" %}
   </head>
+
+  <script>
+      $(document).ready(function () {
+          $('#table').DataTable();
+      });
+  </script>
+  <style>
+      h1{
+          text-decoration: underline;
+      }
+
+      .listView ul{
+          height:500px;
+          overflow:hidden;
+          overflow-y:scroll;
+      }
+
+  </style>
+
   <body>
       <!-- navbar -->
       <nav class="navbar is-info">
           <div class="container">
               <div class="navbar-brand">
-                  <a class="navbar-item" href="/" style="font-weight:bold;">pretragadelova</a>
+                  <a class="navbar-item" href="/" style="font-weight:bold;">carservice</a>
                   <span class="navbar-burger burger" data-target="nav-menu">
                       <span></span>
                       <span></span>
@@ -26,7 +52,9 @@
               <div id="nav-menu" class="navbar-menu">
                   <div class="navbar-start">
                       <a href="/" class="navbar-item{% ifequal page "home.html" %} is-active{%endifequal%}">Home</a>
-                      <a href="/about" class="navbar-item{% ifequal page "about.html" %} is-active{%endifequal%}">About</a>
+                      <a href="/cart" class="navbar-item{% ifequal page "cart.html" %} is-active{%endifequal%}">Cart</a>
+                      <a href="/parts" class="navbar-item{% ifequal page "parts.html" %} is-active{%endifequal%}">Parts</a>
+                      <a href="/about" class="navbar-item{% ifequal page "parts.html" %} is-active{%endifequal%}">About Project</a>
                   </div>
               </div>
           </div>

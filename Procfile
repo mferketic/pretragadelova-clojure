@@ -1,1 +1,1 @@
-web: java -Dclojure.main.report=stderr -cp target/uberjar/pretragadelova.jar clojure.main -m pretragadelova.core
+web: java -Dclojure.main.report=stderr -cp target/uberjar/carservice.jar clojure.main -m carservice.core
