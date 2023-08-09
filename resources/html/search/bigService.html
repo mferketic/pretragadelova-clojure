@@ -4,16 +4,17 @@
     <div class="columns is-centered">
         <div class="column is-two-thirds">
             <h1>MAJOR SERVICE</h1>
-            <p>When performing a major car service, it's essential to address critical components to ensure optimal
+            <p>When performing a <b>major car service</b>, it's essential to address critical components to ensure optimal
                 performance and longevity. Some key elements that require attention during this comprehensive maintenance
-                include: <br><br> - Timing belt (which controls the synchronization of engine components)
-                <br>- Guide roller (that helps maintain proper belt tension)
-                <br>- Spanner (that ensures secure fastening)
-                <br>- Water pump (responsible for regulating engine temperature)<br>
+                include: <br><br><b> - Timing belt </b>(which controls the synchronization of engine components)
+                <br><b>- Guide roller</b> (that helps maintain proper belt tension)
+                <br><b>- Spanner</b> (that ensures secure fastening)
+                <br><b>- Water pump</b> (responsible for regulating engine temperature)<br>
                 <br>Replacing and maintaining these components diligently can help keep
-                your vehicle running smoothly and reduce the risk of costly repairs down the road.</p>
+                your vehicle running smoothly and reduce the risk of costly repairs down the road.</p><br>
             <div class="columns">
                 <div class="column">
+                    <h3>Search for your parts</h3>
                     <form method="POST" action="/searchForBigService">
                         {% csrf-field %}
                         <div class="field">
@@ -22,7 +23,7 @@
                             </label>
                             <select class="input" name="model1" id="model1">
                                 {% for model in models %}
-                                <option value="{{model.id}}">{{model.name}}</option>
+                                <option value="{{model.idModel}}">{{model.modelname}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -33,24 +34,24 @@
                             <select class="input" name="type1" id="type1">
                                 <option value="0">All</option>
                                 {% for type in types %}
-                                <option value="{{type.id}}">{{type.name}}</option>
+                                <option value="{{type.idType}}">{{type.typename}}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="field">
-                            <label class="label" for="year">
+                            <label class="label" for="year1">
                                 Year manufactured
                             </label>
-                            {% if errors.year %}
+                            {% if errors.year1 %}
                             <div class="notification is-danger">
-                                {{errors.year|join}}
+                                {{errors.year1|join}}
                             </div>
                             {% endif %}
                             <input class="input"
                                    type="number"
-                                   id="year"
-                                   name="year"
-                                   value="{{year}}" />
+                                   id="year1"
+                                   name="year1"
+                                   value="{{year1}}" />
                         </div>
                         <input type="submit"
                                class="button is-primary"
@@ -58,23 +59,59 @@
                     </form>
                 </div>
             </div>
-            <table>
-                <tr>
-                    <th>Company</th>
-                    <th>Contact</th>
-                    <th>Country</th>
-                </tr>
-                <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                    <td>Germany</td>
-                </tr>
-                <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                    <td>Mexico</td>
-                </tr>
-            </table>
+            <br>
+            <div class="columns">
+                <div class="column">
+                    <h3>Your parts</h3>
+                    <table id="tableX" class="table is-bordered is-striped is-hoverable">
+                        <thead style="background-color: cornflowerblue">
+                        <tr>
+                            <th>#</th>
+                            <th>Part Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for part in parts %}
+                        <tr>
+                            <td>{{part.idpart}}</td>
+                            <td>{{part.name}}</td>
+                            <td>{{part.description}}</td>
+                            <td>{{part.price}}</td>
+                            <td>{{part.typename}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <h4>By part</h4>
+                    <form method="POST" action="/addToCart">
+                        <!-- Problem with adding 2 csrf on 1 page -->
+                        <!-- {% csrf-field %} -->
+                        <div class="field">
+                            <label class="label" for="id">
+                                Insert part ID
+                            </label>
+                            {% if errors.id %}
+                            <div class="notification is-danger">
+                                {{errors.id|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="id"
+                                   name="id"
+                                   value="{{id}}" />
+                        </div>
+                        <input type="submit"
+                               class="button is-primary"
+                               value="Buy this part!" />
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
