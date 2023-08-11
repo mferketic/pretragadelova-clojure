@@ -31,6 +31,7 @@
                  [ring/ring-core "1.8.2"]
                  [ring/ring-defaults "0.3.2"]
                  [mysql/mysql-connector-java "8.0.33"]
+                 [buddy "2.0.0"]
                  [selmer "1.12.31"]]
 
   :min-lein-version "2.0.0"

@@ -1,23 +1,15 @@
----------------------ROLE--------------------------------
-
--- :name create-role! :! :n
--- :doc creates a new role record
-INSERT INTO roles
-(name)
-VALUES (:name)
-
 --------------------USERS---------------------------------
 
 -- :name create-user! :! :n
 -- :doc creates a new user record
 INSERT INTO users
-(username, email, password, idRole)
-VALUES (:username, :email, :password, :idRole)
+(email, password)
+VALUES (:email, :password)
 
 -- :name get-user-by-id :? :1
 -- :doc get user by his id
 SELECT * FROM users
-WHERE id = :id
+WHERE email = :email
 
 --------------------SERVICE---------------------------------
 
@@ -34,6 +26,10 @@ VALUES (:name)
 INSERT INTO types
 (typeName, idservice)
 VALUES (:name, :idservice)
+
+-- :name get-types :? :*
+-- :doc selects types that has service id
+SELECT * FROM types
 
 -- :name get-types-by-service-id :? :*
 -- :doc selects types that has service id
@@ -58,7 +54,7 @@ SELECT * from models
 -- :doc creates a new part record
 INSERT INTO parts
 (name, from_year, to_year, price, description, idModel, idType)
-VALUES (:name, :from_year, :to_year, :price, :description, :idModel, :idType)
+VALUES (:partName, :fromYear, :toYear, :price, :description, :model1, :type1)
 
 -- :name update-part! :! :n
 -- :doc update existing part with id
@@ -95,26 +91,18 @@ WHERE models.idModel = :model1
             ELSE 1
         END);
 
---------------------CART-------------------------------------
+--------------------ORDER-------------------------------------
 
--- :name add-to-cart! :! :n
--- :doc creates a new cart record
-INSERT INTO cart
-(idUser, idPart)
-VALUES (:idUser, :idPart)
+-- :name add-order! :! :n
+-- :doc creates a new order record
+INSERT INTO orders
+(city, email, phone, quantity, idPart)
+VALUES (:city, :email, :phone, :quantity, :idPart)
 
--- :name delete-from-cart! :! :n
--- :doc delete cart with id
-DELETE FROM cart
-WHERE idCart = :id
+-- :name get-orders-cart! :? :*
+-- :doc get all orders
+SELECT * FROM orders
 
--- :name get-cart-for-user-id :? :1
--- :doc selects cart items for user
-SELECT * FROM cart
-                  JOIN users ON users.id = cart.idUser
-                  JOIN parts ON parts.id = cart.idPart
-                  JOIN types ON parts.idType = types.id
-                    WHERE users.id = :id;
 
 
 

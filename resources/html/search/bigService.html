@@ -23,7 +23,7 @@
                             </label>
                             <select class="input" name="model1" id="model1">
                                 {% for model in models %}
-                                <option value="{{model.idModel}}">{{model.modelname}}</option>
+                                <option value="{{model.idmodel}}">{{model.modelname}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -60,6 +60,7 @@
                 </div>
             </div>
             <br>
+            <i>(Prikazuju se svi delovi za "model C" - 2010 god)</i>
             <div class="columns">
                 <div class="column">
                     <h3>Your parts</h3>
@@ -110,8 +111,11 @@
                                class="button is-primary"
                                value="Buy this part!" />
                     </form>
+                    <i>("By Part" POST zahtev ne radi zbog drugog csrf-field-a)</i>
+                    <br>
+                    <a href="/buyPart" class="button is-info"/>Go to shop!</a>
                 </div>
-            </div>
+            </div>s
         </div>
     </div>
 </div>

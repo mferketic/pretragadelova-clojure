@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <div class="columns is-centered">
+        <div class="column">
+            <!-- Content -->
+            <div class="columns">
+                <div class="column" style="text-align: center">
+                    <h2 style="text-align: center">Admin login</h2>
+                    <form method="POST" action="/loginAdmin">
+                        {% csrf-field %}
+                        <div class="field">
+                            <label class="label" for="email">
+                                Email
+                            </label>
+                            {% if errors.email %}
+                            <div class="notification is-danger">
+                                {{errors.email|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input" style="width: 200px"
+                                   type="text"
+                                   id="email"
+                                   name="email"
+                                   value="{{email}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="password">
+                                Password
+                            </label>
+                            {% if errors.password %}
+                            <div class="notification is-danger">
+                                {{errors.password|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input" style="width: 200px"
+                                   type="password"
+                                   id="password"
+                                   name="password"
+                                   value="{{password}}" />
+                        </div>
+                        <input type="submit"
+                               class="button is-primary"
+                               value="Login" />
+                    </form>
+                </div>
+            </div>
 
-</body>
-</html>
+        </div>
+    </div>
+</div>
+{% endblock %}

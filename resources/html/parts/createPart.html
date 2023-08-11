@@ -1,10 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <h1>ADD PART</h1>
+            <div class="columns">
+                <div class="column">
+                    <form method="POST" action="/addNewPart">
+                        {% csrf-field %}
+                        <div class="field">
+                            <label class="label" for="type1">
+                                Choose type
+                            </label>
+                            <select class="input" name="type1" id="type1">
+                                {% for type in types %}
+                                <option value="{{type.idtype}}">{{type.idService}}{{type.typename}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="model1">
+                                Choose model
+                            </label>
+                            <select class="input" name="model1" id="model1">
+                                {% for model in models %}
+                                <option value={{model.idmodel}}>{{model.modelname}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="partName">
+                                Part name
+                            </label>
+                            {% if errors.partName %}
+                            <div class="notification is-danger">
+                                {{errors.partName|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="text"
+                                   id="partName"
+                                   name="partName"
+                                   value="{{partName}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="fromYear">
+                                Starting year
+                            </label>
+                            {% if errors.fromYear %}
+                            <div class="notification is-danger">
+                                {{errors.fromYear|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="fromYear"
+                                   name="fromYear"
+                                   value="{{fromYear}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="toYear">
+                                Ending year
+                            </label>
+                            {% if errors.toYear %}
+                            <div class="notification is-danger">
+                                {{errors.toYear|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="toYear"
+                                   name="toYear"
+                                   value="{{toYear}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="price">
+                                Price
+                            </label>
+                            {% if errors.price %}
+                            <div class="notification is-danger">
+                                {{errors.price|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   id="price"
+                                   name="price"
+                                   value="{{price}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="description">
+                                Description
+                            </label>
+                            {% if errors.description %}
+                            <div class="notification is-danger">
+                                {{errors.description|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="text"
+                                   id="description"
+                                   name="description"
+                                   value="{{description}}" />
+                        </div>
+                        <input type="submit"
+                               class="button is-primary"
+                               value="Add part" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
