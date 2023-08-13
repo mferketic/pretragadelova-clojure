@@ -222,8 +222,6 @@
 (defn add-part [{:keys [params]}]
   (if-let [errors (validate-addPart params)]
     (-> (response/found "/addPart")
-        ;OBRISI POSLE -------------------------------------------------
-        ;(println "Email:" params)
         (assoc :flash (assoc params :errors errors)))
     (do
       (db/create-part! params)
