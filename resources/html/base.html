@@ -57,6 +57,7 @@
                   </div>
                   <div class="navbar-end">
                       <a href="/allParts" class="navbar-item{% ifequal page "parts/allParts.html" %} is-active{%endifequal%}">Parts</a>
+                      <a href="/orders" class="navbar-item{% ifequal page "orders/orders.html" %} is-active{%endifequal%}">Orders</a>
                       <a href="/login" class="navbar-item{% ifequal page "auth/login.html" %} is-active{%endifequal%}">Login</a>
                       <form method="POST" action="/logout">
                           {% csrf-field %}

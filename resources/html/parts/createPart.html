@@ -44,6 +44,21 @@
                                    value="{{partName}}" />
                         </div>
                         <div class="field">
+                            <label class="label" for="serial">
+                                Serial number
+                            </label>
+                            {% if errors.serial %}
+                            <div class="notification is-danger">
+                                {{errors.serial|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="serial"
+                                   name="serial"
+                                   value="{{serial}}" />
+                        </div>
+                        <div class="field">
                             <label class="label" for="fromYear">
                                 Starting year
                             </label>

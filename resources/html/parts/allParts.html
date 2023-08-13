@@ -14,12 +14,13 @@
                         <thead style="background-color: cornflowerblue">
                         <tr>
                             <th>#</th>
-                            <th>Naziv dela</th>
-                            <th>Za model</th>
-                            <th>Godine</th>
-                            <th>Tip</th>
-                            <th>Opis</th>
-                            <th>Cena</th>
+                            <th>Part Name</th>
+                            <th>Serial num.</th>
+                            <th>Model</th>
+                            <th>Years</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Price</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -27,6 +28,7 @@
                         <tr>
                             <td>{{part.idpart}}</td>
                             <td>{{part.name}}</td>
+                            <td>{{part.serial}}</td>
                             <td>{{part.modelname}}</td>
                             <td>{{part.from_year}} - {{part.to_year}}</td>
                             <td>{{part.typename}}</td>

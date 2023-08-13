@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <h1>DELETE PART</h1>
+            <div class="columns">
+                <div class="column">
+                    <form method="POST" action="/deleteOldPart">
+                        {% csrf-field %}
+                        <div class="field">
+                            <label class="label" for="id">
+                                Part ID
+                            </label>
+                            {% if errors.id %}
+                            <div class="notification is-danger">
+                                {{errors.id|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="id"
+                                   name="id"
+                                   value="{{id}}" />
+                        </div>
+                        <input type="submit"
+                               class="button is-primary"
+                               value="Delete part" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

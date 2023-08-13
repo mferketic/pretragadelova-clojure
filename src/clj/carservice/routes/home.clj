@@ -18,13 +18,6 @@
 (defn about-page [request]
   (layout/render request "about.html"))
 
-(defn part-page [request]
-  (let [parts (:parts request)]
-    (println "Parts data:" parts)
-    (layout/render request "parts.html" {:data {:parts parts}})))
-
-
-
 (defn bigService-page [request]
   (let [{:keys [flash parts] :as request} request]
     (layout/render
@@ -38,9 +31,6 @@
              (println "Parts data:" parts)
              (select-keys flash [:model1 :type1 :year1 :errors])))))
 
-
-
-
 (defn smallService-page [request]
   (layout/render request "smallService.html"))
 
@@ -53,8 +43,11 @@
     "parts/allParts.html"
     {:parts (db/get-parts)}))
 
-(defn deletePart-page [request]
-  (layout/render request "about.html"))
+(defn deletePart-page [{:keys [flash] :as request}]
+  (layout/render
+    request
+    "parts/deletePart.html"
+  (select-keys flash [:id :errors])))
 
 (defn addPart-page [{:keys [flash] :as request}]
   (layout/render
@@ -62,7 +55,7 @@
     "parts/createPart.html"
     (merge {:models (db/get-models)}
            {:types (db/get-types)}
-           (select-keys flash [:type1 :model1 :partName :fromYear :toYear :price :description :errors]))))
+           (select-keys flash [:type1 :model1 :partName :serial :fromYear :toYear :price :description :errors]))))
 
 (defn updatePart-page [{:keys [flash] :as request}]
   (layout/render
@@ -70,10 +63,27 @@
     "parts/updatePart.html"
     (merge {:models (db/get-models)}
            {:types (db/get-types)}
-           (select-keys flash [:type1 :model1 :partName :fromYear :toYear :price :description :errors]))))
+           (select-keys flash [:type1 :model1 :partName :serial :fromYear :toYear :price :description :errors]))))
 
-(defn order-page [request]
-  (layout/render request "about.html"))
+(defn buyPart-page [{:keys [flash] :as request}]
+  (layout/render
+    request
+    "orders/buyPart.html"
+    (merge {:parts (db/get-parts)}
+           (select-keys flash [:city :email :phone :idPart :quantity :errors]))))
+
+(defn orders-page [{:keys [flash] :as request}]
+  (layout/render
+    request
+    "orders/orders.html"
+    (merge {:orders (db/get-unsent-orders)}
+           (select-keys flash [:id :errors]))))
+
+(defn sentOrders-page [request]
+  (layout/render
+    request
+    "orders/sentOrders.html"
+    {:orders (db/get-sent-orders)}))
 
 (defn login-page [request]
   (layout/render request "auth/login.html"))
@@ -99,21 +109,75 @@
    [:partName
     st/required
     st/string]
+   [:serial
+    st/required]
    [:fromYear
     st/required
-    {:message  "ID must be positive number!"
+    {:message  "Year must be positive number!"
      :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
    [:toYear
     st/required
-    {:message  "ID must be positive number!"
+    {:message  "Year must be positive number!"
      :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
    [:price
     st/required
-    {:message  "ID must be positive number!"
+    {:message  "Price must be positive number!"
      :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
    [:description
     st/required
     st/string]])
+
+(def updatePart-schema
+  [[:idPart
+    st/required
+    {:message  "ID must be positive number!"
+     :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
+   [:type1
+    st/required]
+   [:model1
+    st/required]
+   [:partName
+    st/required
+    st/string]
+   [:serial
+    st/required]
+   [:fromYear
+    st/required
+    {:message  "Year must be positive number!"
+     :validate  (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
+   [:toYear
+    st/required
+    {:message  "Year must be positive number!"
+     :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
+   [:price
+    st/required
+    {:message  "Price must be positive number!"
+     :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
+   [:description
+    st/required
+    st/string]])
+
+(def onlyId-schema
+  [[:id
+    st/required
+    {:message  "ID must be positive number!"
+     :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]])
+
+(def buyPart-schema
+  [[:city
+    st/required
+    st/string]
+   [:email
+    st/required]
+   [:phone
+    st/required]
+  [:idPart
+    st/required]
+   [:quantity
+    st/required
+    {:message  "Quantity must be positive number!"
+     :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]
+])
 
 
 ; --- VALIDATION -----------------------------------------------------------------
@@ -122,13 +186,21 @@
 (defn validate-search [params]
   (first (st/validate params search-schema)))
 
-;IdCheck
-;(defn validate-id [params]
-;(first (st/validate params idCheck-schema)))
-
 ;Add part
 (defn validate-addPart [params]
   (first (st/validate params addPart-schema)))
+
+;Update part
+(defn validate-updatePart [params]
+  (first (st/validate params updatePart-schema)))
+
+;Delete part
+(defn validate-onlyId [params]
+  (first (st/validate params onlyId-schema)))
+
+;Buy part
+(defn validate-buyPart [params]
+  (first (st/validate params buyPart-schema)))
 
 
 
@@ -151,12 +223,67 @@
   (if-let [errors (validate-addPart params)]
     (-> (response/found "/addPart")
         ;OBRISI POSLE -------------------------------------------------
-        (println "Email:" params)
+        ;(println "Email:" params)
         (assoc :flash (assoc params :errors errors)))
     (do
       (db/create-part! params)
       (response/found "/allParts"))))
 
+;UPDATE PART
+(defn update-part [{:keys [params]}]
+  (let [errors (validate-updatePart params)]
+    (if errors
+      (-> (response/found "/updatePart")
+          (assoc :flash (assoc params :errors errors)))
+      (let [part (db/get-part-by-id {:id (:idPart params)})]
+        (if-not part
+          (-> (response/found "/updatePart")
+              (assoc :flash (assoc params :errors {:idPart "Part with ID doesnt exist!!"})))
+          (do
+            (db/update-part! params)
+            (response/found "/allParts")))))))
+
+;DELETE PART
+(defn delete-part [{:keys [params]}]
+  (let [errors (validate-onlyId params)]
+    (if errors
+      (-> (response/found "/deletePart")
+          (assoc :flash (assoc params :errors errors)))
+      (let [part (db/get-part-by-id params)]
+        (if-not part
+          (-> (response/found "/deletePart")
+              (assoc :flash (assoc params :errors {:id "Part with ID doesnt exist!!"})))
+          (do
+            (db/delete-part! params)
+            (response/found "/allParts")))))))
+
+;BUY PART
+(defn buy-part [{:keys [params]}]
+  (let [errors (validate-buyPart params)]
+    (if errors
+      (-> (response/found "/buyPart")
+          (assoc :flash (assoc params :errors errors)))
+      (let [part (db/get-part-by-id {:id (:idPart params)})]
+        (if-not part
+          (-> (response/found "/buyPart")
+              (assoc :flash (assoc params :errors {:idPart "Part with ID doesnt exist!!"})))
+          (do
+            (db/add-order! params)
+            (response/found "/orders")))))))
+
+;COMPLETE ORDER
+(defn complete-order [{:keys [params]}]
+  (let [errors (validate-onlyId params)]
+    (if errors
+      (-> (response/found "/orders")
+          (assoc :flash (assoc params :errors errors)))
+      (let [part (db/get-order-by-id params)]
+        (if-not part
+          (-> (response/found "/orders")
+              (assoc :flash (assoc params :errors {:id "Order with ID doesnt exist or is already sent!!"})))
+          (do
+            (db/order-sent params)
+            (response/found "/sentOrders")))))))
 
 
 
@@ -191,7 +318,11 @@
    ;API
    ["/searchForBigService" {:post search-parts}]
    ["/addNewPart" {:post add-part}]
-   ["/updateNewPart" {:post add-part}]
+   ["/updateNewPart" {:post update-part}]
+   ["/deleteOldPart" {:post delete-part}]
+   ["/buyAPart" {:post buy-part}]
+   ["/completeOrder" {:post complete-order}]
+
    ;["/test" {:post  (create-user "test2" "test")}]
 
    ;Routes
@@ -207,10 +338,9 @@
    ["/deletePart" {:get deletePart-page}]
    ["/addPart" {:get addPart-page}]
    ["/updatePart" {:get updatePart-page}]
-
-
-   ["/parts" {:get part-page}]
-   ["/orders" {:get order-page}]
+   ["/buyPart" {:get buyPart-page}]
+   ["/orders" {:get orders-page}]
+   ["/sentOrders" {:get sentOrders-page}]
 
    ["/login" {:get login-page}]
 

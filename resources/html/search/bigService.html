@@ -88,31 +88,7 @@
                     </table>
                 </div>
                 <div class="column">
-                    <h4>By part</h4>
-                    <form method="POST" action="/addToCart">
-                        <!-- Problem with adding 2 csrf on 1 page -->
-                        <!-- {% csrf-field %} -->
-                        <div class="field">
-                            <label class="label" for="id">
-                                Insert part ID
-                            </label>
-                            {% if errors.id %}
-                            <div class="notification is-danger">
-                                {{errors.id|join}}
-                            </div>
-                            {% endif %}
-                            <input class="input"
-                                   type="number"
-                                   id="id"
-                                   name="id"
-                                   value="{{id}}" />
-                        </div>
-                        <input type="submit"
-                               class="button is-primary"
-                               value="Buy this part!" />
-                    </form>
-                    <i>("By Part" POST zahtev ne radi zbog drugog csrf-field-a)</i>
-                    <br>
+                    <h4>Buy part?</h4>
                     <a href="/buyPart" class="button is-info"/>Go to shop!</a>
                 </div>
             </div>s

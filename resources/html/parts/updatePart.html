@@ -6,8 +6,23 @@
             <h1>UPDATE PART</h1>
             <div class="columns">
                 <div class="column">
-                    <form method="POST" action="/addNewPart">
+                    <form method="POST" action="/updateNewPart">
                         {% csrf-field %}
+                        <div class="field">
+                            <label class="label" for="idPart">
+                                Part ID
+                            </label>
+                            {% if errors.idPart %}
+                            <div class="notification is-danger">
+                                {{errors.idPart|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="idPart"
+                                   name="idPart"
+                                   value="{{idPart}}" />
+                        </div>
                         <div class="field">
                             <label class="label" for="type1">
                                 Choose type
@@ -42,6 +57,21 @@
                                    id="partName"
                                    name="partName"
                                    value="{{partName}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="serial">
+                                Serial number
+                            </label>
+                            {% if errors.serial %}
+                            <div class="notification is-danger">
+                                {{errors.serial|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="serial"
+                                   name="serial"
+                                   value="{{serial}}" />
                         </div>
                         <div class="field">
                             <label class="label" for="fromYear">
@@ -106,7 +136,7 @@
                         </div>
                         <input type="submit"
                                class="button is-primary"
-                               value="Add part" />
+                               value="Update part" />
                     </form>
                 </div>
             </div>

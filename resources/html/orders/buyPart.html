@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <h1>BUY PART</h1>
+            <div class="columns">
+                <div class="column">
+                    <h3>Your information</h3>
+                    <form method="POST" action="/buyAPart">
+                        {% csrf-field %}
+                        <div class="field">
+                            <label class="label" for="city">
+                                City
+                            </label>
+                            {% if errors.city %}
+                            <div class="notification is-danger">
+                                {{errors.city|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="text"
+                                   id="city"
+                                   name="city"
+                                   value="{{city}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="email">
+                                Email
+                            </label>
+                            {% if errors.email %}
+                            <div class="notification is-danger">
+                                {{errors.email|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="email"
+                                   id="email"
+                                   name="email"
+                                   value="{{email}}" />
+                        </div>
+                        <div class="field">
+                            <label class="label" for="phone">
+                                Phone number
+                            </label>
+                            {% if errors.email %}
+                            <div class="notification is-danger">
+                                {{errors.phone|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="text"
+                                   id="phone"
+                                   name="phone"
+                                   value="{{phone}}" />
+                        </div>
+                        <h3>Pick a part</h3>
+                        <div class="field">
+                            <label class="label" for="idPart">
+                                Choose part
+                            </label>
+                            <select class="input" name="idPart" id="idPart">
+                                {% for part in parts %}
+                                <option value="{{part.idpart}}">(id:{{part.idpart}}) {{part.name}}-{{part.price}}$</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="quantity">
+                                Quantity
+                            </label>
+                            {% if errors.quantity %}
+                            <div class="notification is-danger">
+                                {{errors.quantity|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="quantity"
+                                   name="quantity"
+                                   value="{{quantity}}" />
+                        </div>
+                        <input type="submit"
+                               class="button is-primary"
+                               value="Add part" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
