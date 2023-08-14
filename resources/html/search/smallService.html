@@ -1,10 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <div class="columns is-centered">
+        <div class="column is-two-thirds">
+            <h1>MINOR SERVICE</h1>
+            <p>When performing a <b>minor car service</b>, it's essential to address critical components to ensure optimal
+                performance and longevity. Some key elements that require attention during this comprehensive maintenance
+                include: <br><br><b> - Timing belt </b>(which controls the synchronization of engine components)
+                <br><b>- Guide roller</b> (that helps maintain proper belt tension)
+                <br><b>- Spanner</b> (that ensures secure fastening)
+                <br><b>- Water pump</b> (responsible for regulating engine temperature)<br>
+                <br>Replacing and maintaining these components diligently can help keep
+                your vehicle running smoothly and reduce the risk of costly repairs down the road.</p><br>
+            <div class="columns">
+                <div class="column">
+                    <h3>Search for your parts</h3>
+                    <form method="POST" action="/searchForMinorService">
+                        {% csrf-field %}
+                        <div class="field">
+                            <label class="label">
+                                Mercedes Benz Model
+                            </label>
+                            <select class="input" name="model1" id="model1">
+                                {% for model in models %}
+                                <option value="{{model.idmodel}}">{{model.modelname}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label class="label">
+                                Part types
+                            </label>
+                            <select class="input" name="type1" id="type1">
+                                <option value="0">All</option>
+                                {% for type in types %}
+                                <option value="{{type.idType}}">{{type.typename}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="year1">
+                                Year manufactured
+                            </label>
+                            {% if errors.year1 %}
+                            <div class="notification is-danger">
+                                {{errors.year1|join}}
+                            </div>
+                            {% endif %}
+                            <input class="input"
+                                   type="number"
+                                   id="year1"
+                                   name="year1"
+                                   value="{{year1}}" />
+                        </div>
+                        <input type="submit"
+                               class="button is-primary"
+                               value="Search for parts!" />
+                    </form>
+                </div>
+            </div>
+            <br>
+            <i>(Prikazuju se delovi za mali servis za "model E" - 2007 god)</i>
+            <div class="columns">
+                <div class="column">
+                    <h3>Your parts</h3>
+                    <table id="tableX" class="table is-bordered is-striped is-hoverable">
+                        <thead style="background-color: cornflowerblue">
+                        <tr>
+                            <th>#</th>
+                            <th>Part Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for part in parts %}
+                        <tr>
+                            <td>{{part.idpart}}</td>
+                            <td>{{part.name}}</td>
+                            <td>{{part.description}}</td>
+                            <td>{{part.price}}</td>
+                            <td>{{part.typename}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column">
+                    <h4>Buy part?</h4>
+                    <a href="/buyPart" class="button is-info"/>Go to shop!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

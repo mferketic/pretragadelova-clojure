@@ -27,15 +27,30 @@
              {:types (db/get-types-by-service-id {:idService 1})}
              ;PART THAT DOESN'T WORK ------------------------------------------------
              ; {:parts parts}
-             {:parts (db/get-my-parts {:model1 1, :type1 0, :year1 2010})}
              (println "Parts data:" parts)
+             {:parts (db/get-my-parts {:model1 1, :type1 0, :year1 2010})}
+
              (select-keys flash [:model1 :type1 :year1 :errors])))))
 
 (defn smallService-page [request]
-  (layout/render request "smallService.html"))
+  (let [{:keys [flash] :as request} request]
+  (layout/render
+    request
+    "search/smallService.html"
+    (merge {:models (db/get-models)}
+           {:types (db/get-types-by-service-id {:idService 2})}
+           {:parts (db/get-my-parts {:model1 2, :type1 5, :year1 2007})}
+           (select-keys flash [:model1 :type1 :year1 :errors])))))
 
 (defn sensors-page [request]
-  (layout/render request "sensors.html"))
+  (let [{:keys [flash] :as request} request]
+    (layout/render
+      request
+      "search/sensors.html"
+      (merge {:models (db/get-models)}
+             {:types (db/get-types-by-service-id {:idService 3})}
+             {:parts (db/get-my-parts {:model1 1, :type1 10, :year1 2016})}
+             (select-keys flash [:model1 :type1 :year1 :errors])))))
 
 (defn allParts-page [request]
   (layout/render
@@ -218,6 +233,30 @@
             (assoc :parts parts)
             (assoc :flash (assoc params :errors {})))))))
 
+;SEARCH MINOR SERVICE PART
+(defn search-minor [{:keys [params]}]
+  (let [errors (validate-search params)]
+    (if (seq errors)
+      (-> (response/found "/minorService")
+          (assoc :flash (assoc params :errors errors)))
+      (let [params-no-token (dissoc params :__anti-forgery-token)
+            parts (db/get-my-parts params-no-token)]
+        (-> (response/found "/minorService")
+            (assoc :parts parts)
+            (assoc :flash (assoc params :errors {})))))))
+
+(defn search-sensor [{:keys [params]}]
+  (let [errors (validate-search params)]
+    (if (seq errors)
+      (-> (response/found "/sensors")
+          (assoc :flash (assoc params :errors errors)))
+      (let [params-no-token (dissoc params :__anti-forgery-token)
+            parts (db/get-my-parts params-no-token)]
+        (-> (response/found "/sensors")
+            (assoc :parts parts)
+            (assoc :flash (assoc params :errors {})))))))
+
+
 ;ADD PART
 (defn add-part [{:keys [params]}]
   (if-let [errors (validate-addPart params)]
@@ -315,13 +354,15 @@
 
    ;API
    ["/searchForBigService" {:post search-parts}]
+   ["/searchForMinorService" {:post search-minor}]
+   ["/searchForSensors" {:post search-sensor}]
    ["/addNewPart" {:post add-part}]
    ["/updateNewPart" {:post update-part}]
    ["/deleteOldPart" {:post delete-part}]
    ["/buyAPart" {:post buy-part}]
    ["/completeOrder" {:post complete-order}]
 
-   ;["/test" {:post  (create-user "test2" "test")}]
+   ["/test" {:post  (create-user "test44" "test")}]
 
    ;Routes
    ["/" {:get home-page}]
