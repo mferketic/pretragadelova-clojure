@@ -113,7 +113,7 @@
     st/required]
    [:year1
     st/required
-    {:message  "ID must be positive number!"
+    {:message  "Year must be in valid format!"
      :validate (fn [year] (> (Integer/parseInt (re-find #"\A-?\d+" year)) 0))}]])
 
 (def addPart-schema
@@ -362,7 +362,7 @@
    ["/buyAPart" {:post buy-part}]
    ["/completeOrder" {:post complete-order}]
 
-   ["/test" {:post  (create-user "test44" "test")}]
+   ;["/test" {:post  (create-user "test44" "test")}]
 
    ;Routes
    ["/" {:get home-page}]

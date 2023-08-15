@@ -6,8 +6,6 @@ List of parts that need to be purchased will be shown. Once you find all the nec
 You can perform CRUD operations on the parts.
 You can see completed and uncompleted orders. You can also complete an order.
 
-Video of project running: TODO
-
 ## Prerequisites
 
 You will need [Leiningen][1] 2.0 or above installed.
